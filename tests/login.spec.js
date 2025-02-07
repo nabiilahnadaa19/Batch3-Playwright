@@ -36,9 +36,17 @@ test('checkout after login', async ({ page }) => {
 
     await page.click('#checkout');
 
-    await page.fill('#first-name', 'Nabiilah Nad');
-    await page.fill('#last-name', 'Iswari');
-    await page.fill('#postal-code', '40255');
+    const inputFirstName = page.locator('*#first-name');
+    await inputFirstName.fill('Nabiilah Nada');
+    expect (inputFirstName).toHaveValue('Nabiilah Nada');
+
+    const inputLastName = page.locator('*#last-name');
+    await inputLastName.fill('Iswari');
+    expect (inputLastName).toHaveValue('Iswari');
+
+    const inputPostalCode = page.locator('*#postal-code');
+    await inputPostalCode.fill('40255');
+    expect (inputPostalCode).toHaveValue('40255');
 
     await page.click('#continue');
     expect(page.locator('.cart_item')).toHaveCount(2);
