@@ -1,6 +1,10 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
 
+// @ts-ignore
+const { default: loginActions } = require ('../tests/pmo/object/loginActions');
+const { default: checkoutActions } = require ('../tests/pmo/object/checkoutActions');
+
 test('login', async ({ page }) => {
   await page.goto('https://www.saucedemo.com/');
 
@@ -54,3 +58,20 @@ test('checkout after login', async ({ page }) => {
     await page.click('#finish');
     expect(page.locator('.complete-header')).toHaveText('Thank you for your order!');
   });
+
+test('login with pmo', async ({ page }) => {
+  const loginObj = new loginActions(page);
+  await loginObj.goto();
+  await loginObj.inputLogin();
+})
+
+test('checkout with pmo', async ({ page }) => {
+  const loginObj = new loginActions(page);
+  const checkoutObj = new checkoutActions(page);
+
+  await loginObj.goto();
+  await loginObj.inputLogin();
+
+  await checkoutObj.addToCart();
+  await checkoutObj.checkout();
+});
